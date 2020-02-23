@@ -12,10 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.*;
 import lombok.extern.slf4j.Slf4j;
 import com.example.taco.Taco;
 import com.example.taco.Ingredient.Type;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
