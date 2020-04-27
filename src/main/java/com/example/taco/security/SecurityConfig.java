@@ -48,8 +48,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/design", "/orders")
-                .hasRole("USER")
-                .antMatchers("/", "/**").permitAll();
+//                .antMatchers("/design", "/orders")
+//                .hasRole("USER")
+                .antMatchers("/", "/**").permitAll()
+                .and()
+                .formLogin()
+                .loginPage("/login")
+                .defaultSuccessUrl("/design", true)
+                .and()
+                .logout()
+                .logoutSuccessUrl("/");
+
+        http.csrf().disable();
+        http.headers().frameOptions().disable();
+//                .loginProcessingUrl("/authenticate")
+//                .usernameParameter("user")
+//                .passwordParameter("pwd")
     }
 }
