@@ -24,15 +24,19 @@ public class Order implements Serializable {
 
     private Date placedAt;
 
+    @Column(name = "deliveryName")
     @NotBlank(message = "Name is required")
     private String name;
 
+    @Column(name = "deliveryStreet")
     @NotBlank(message = "Street is required")
     private String street;
 
+    @Column(name = "deliveryCity")
     @NotBlank(message = "City is required")
     private String city;
 
+    @Column(name = "deliveryState")
     @NotBlank(message = "State is required")
     private String state;
 
