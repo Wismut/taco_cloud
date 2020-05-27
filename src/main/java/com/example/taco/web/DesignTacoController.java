@@ -58,7 +58,9 @@ public class DesignTacoController {
     }
 
     private List<Ingredient> filterByType(List<Ingredient> ingredients, Type type) {
-        return ingredients.stream().filter(ingredient -> ingredient.getType() == type).collect(Collectors.toList());
+        return ingredients.stream()
+                .filter(ingredient -> ingredient.getType() == type)
+                .collect(Collectors.toList());
     }
 
     @PostMapping
