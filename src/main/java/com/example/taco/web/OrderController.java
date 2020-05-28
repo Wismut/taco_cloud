@@ -5,7 +5,6 @@ import com.example.taco.User;
 import com.example.taco.data.OrderRepository;
 import com.example.taco.data.UserRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,23 +24,20 @@ import java.security.Principal;
 @Controller
 @RequestMapping("/orders")
 @SessionAttributes("order")
-@ConfigurationProperties(prefix = "taco.orders")
 public class OrderController {
     private OrderRepository orderRepo;
     private UserRepository userRepository;
-    private int pageSize = 20;
+    private OrderProps orderProps;
 
-    public OrderController(OrderRepository orderRepo, UserRepository userRepository) {
+    public OrderController(OrderRepository orderRepo, UserRepository userRepository, OrderProps orderProps) {
         this.orderRepo = orderRepo;
         this.userRepository = userRepository;
-    }
-
-    public void setPageSize(int pageSize) {
-        this.pageSize = pageSize;
+        this.orderProps = orderProps;
     }
 
     @GetMapping("/current")
-    public String orderForm() {
+    public String orderForm(Model model) {
+        model.addAttribute("order", new Order());
         return "orderForm";
     }
 
@@ -54,7 +50,19 @@ public class OrderController {
             return "orderForm";
         }
         log.info("Order submitted: " + order);
-        User user = userRepository.findByUsername(principal.getName());
+        User user = new User("asda",
+                "asfda",
+                "asdfa",
+                "asdfa",
+                "sadfas",
+                "asfa",
+                "sdvsa",
+                "asdfs");
+        if (principal != null) {
+            user = userRepository.findByUsername(principal.getName());
+        } else {
+            user = userRepository.save(user);
+        }
         order.setUser(user);
         orderRepo.save(order);
         sessionStatus.setComplete();
@@ -64,7 +72,7 @@ public class OrderController {
     @GetMapping
     public String ordersForUser(
             @AuthenticationPrincipal User user, Model model) {
-        Pageable pageable = PageRequest.of(0, pageSize);
+        Pageable pageable = PageRequest.of(0, orderProps.getPageSize());
         model.addAttribute("orders",
                 orderRepo.findByUserOrderByPlacedAtDesc(user, pageable));
         return "orderList";
