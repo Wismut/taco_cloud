@@ -15,6 +15,7 @@ public class UserRepositoryUserDetailsService implements UserDetailsService {
     @Autowired
     public UserRepositoryUserDetailsService(UserRepository userRepo) {
         this.userRepo = userRepo;
+        insertUserToDb();
     }
 
     @Override
@@ -26,5 +27,17 @@ public class UserRepositoryUserDetailsService implements UserDetailsService {
         }
         throw new UsernameNotFoundException(
                 "User '" + username + "' not found");
+    }
+
+    private void insertUserToDb() {
+        User user = new User("asda",
+                "asfda",
+                "asdfa",
+                "asdfa",
+                "sadfas",
+                "asfa",
+                "sdvsa",
+                "asdfs");
+        userRepo.save(user);
     }
 }

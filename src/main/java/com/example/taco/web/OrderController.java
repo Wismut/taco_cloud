@@ -50,18 +50,9 @@ public class OrderController {
             return "orderForm";
         }
         log.info("Order submitted: " + order);
-        User user = new User("asda",
-                "asfda",
-                "asdfa",
-                "asdfa",
-                "sadfas",
-                "asfa",
-                "sdvsa",
-                "asdfs");
+        User user = userRepository.findAll().iterator().next();
         if (principal != null) {
             user = userRepository.findByUsername(principal.getName());
-        } else {
-            user = userRepository.save(user);
         }
         order.setUser(user);
         orderRepo.save(order);
