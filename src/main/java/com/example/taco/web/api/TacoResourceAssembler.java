@@ -1,6 +1,7 @@
 package com.example.taco.web.api;
 
 import com.example.taco.Taco;
+import com.example.taco.web.DesignTacoController;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 
 public class TacoResourceAssembler

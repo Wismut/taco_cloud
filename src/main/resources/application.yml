@@ -5,6 +5,11 @@ taco:
 logging:
   level:
     tacos: DEBUG
+
+spring:
+  data:
+    rest:
+      base-path: /api
 ---
 spring:
   profiles: prod

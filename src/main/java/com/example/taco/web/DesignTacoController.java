@@ -22,13 +22,12 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/olddesign")
 @SessionAttributes("order")
-public class OldDesignTacoController {
+public class DesignTacoController {
     private final IngredientRepository ingredientRepo;
-
-    private TacoRepository designRepo;
+    private final TacoRepository designRepo;
 
     @Autowired
-    public OldDesignTacoController(IngredientRepository ingredientRepo, TacoRepository designRepo) {
+    public DesignTacoController(IngredientRepository ingredientRepo, TacoRepository designRepo) {
         this.ingredientRepo = ingredientRepo;
         this.designRepo = designRepo;
     }
