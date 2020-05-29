@@ -34,7 +34,7 @@ public class DesignTacoController {
     public Resources<TacoResource> recentTacos() {
         PageRequest page = PageRequest.of(
                 0, 12, Sort.by("createdAt").descending());
-        List<Taco> tacos = tacoRepo.findAll(page);
+        List<Taco> tacos = tacoRepo.findAll(page).getContent();
         List<TacoResource> tacoResources = new TacoResourceAssembler().toResources(tacos);
         Resources<TacoResource> recentResources = new Resources<>(tacoResources);
         recentResources.add(
