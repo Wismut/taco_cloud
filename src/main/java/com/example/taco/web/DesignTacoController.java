@@ -1,27 +1,26 @@
 package com.example.taco.web;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import com.example.taco.Ingredient;
+import com.example.taco.Ingredient.Type;
 import com.example.taco.Order;
+import com.example.taco.Taco;
 import com.example.taco.data.IngredientRepository;
 import com.example.taco.data.TacoRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import lombok.extern.slf4j.Slf4j;
-import com.example.taco.Taco;
-import com.example.taco.Ingredient.Type;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
-@RequestMapping("/design")
+@RequestMapping("/olddesign")
 @SessionAttributes("order")
 public class DesignTacoController {
     private final IngredientRepository ingredientRepo;
