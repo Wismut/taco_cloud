@@ -1,39 +1,47 @@
 package com.example.taco.web.api;
 
-import com.example.taco.Order;
 import com.example.taco.Taco;
-import com.example.taco.data.OrderRepository;
 import com.example.taco.data.TacoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.hateoas.EntityLinks;
+import org.springframework.hateoas.Resource;
+import org.springframework.hateoas.Resources;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
+
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping(path = "/design",
         produces = "application/json")
 @CrossOrigin(origins = "*")
 public class DesignTacoController {
-    private TacoRepository tacoRepo;
-    private OrderRepository orderRepository;
+    private final TacoRepository tacoRepo;
     @Autowired
     EntityLinks entityLinks;
 
-    public DesignTacoController(TacoRepository tacoRepo, OrderRepository orderRepository) {
+    public DesignTacoController(TacoRepository tacoRepo) {
         this.tacoRepo = tacoRepo;
-        this.orderRepository = orderRepository;
     }
 
     @GetMapping("/recent")
-    public Iterable<Taco> recentTacos() {
+    public Resources<Resource<Taco>> recentTacos() {
         PageRequest page = PageRequest.of(
                 0, 12, Sort.by("createdAt").descending());
-        return tacoRepo.findAll(page);
+        List<Taco> tacos = tacoRepo.findAll(page);
+        Resources<Resource<Taco>> recentResources = Resources.wrap(tacos);
+        recentResources.add(
+                linkTo(methodOn(DesignTacoController.class).recentTacos())
+                        .withRel("resents")
+        );
+        return recentResources;
     }
 
     @GetMapping("/{id}")
@@ -47,36 +55,5 @@ public class DesignTacoController {
     @ResponseStatus(HttpStatus.CREATED)
     public Taco postTaco(@RequestBody Taco taco) {
         return tacoRepo.save(taco);
-    }
-
-    @PatchMapping(path = "/{orderId}", consumes = "application/json")
-    public Order patchOrder(@PathVariable("orderId") Long orderId,
-                            @RequestBody Order patch) {
-        Order order = orderRepository.findById(orderId).get();
-        if (patch.getDeliveryName() != null) {
-            order.setDeliveryName(patch.getDeliveryName());
-        }
-        if (patch.getDeliveryStreet() != null) {
-            order.setDeliveryStreet(patch.getDeliveryStreet());
-        }
-        if (patch.getDeliveryCity() != null) {
-            order.setDeliveryCity(patch.getDeliveryCity());
-        }
-        if (patch.getDeliveryState() != null) {
-            order.setDeliveryState(patch.getDeliveryState());
-        }
-        if (patch.getDeliveryZip() != null) {
-            order.setDeliveryZip(patch.getDeliveryState());
-        }
-        if (patch.getCcNumber() != null) {
-            order.setCcNumber(patch.getCcNumber());
-        }
-        if (patch.getCcExpiration() != null) {
-            order.setCcExpiration(patch.getCcExpiration());
-        }
-        if (patch.getCcCVV() != null) {
-            order.setCcCVV(patch.getCcCVV());
-        }
-        return orderRepository.save(order);
     }
 }
