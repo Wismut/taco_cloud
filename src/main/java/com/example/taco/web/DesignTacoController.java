@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
-@RequestMapping("/olddesign")
+@RequestMapping("/design")
 @SessionAttributes("order")
 public class DesignTacoController {
     private final IngredientRepository ingredientRepo;
