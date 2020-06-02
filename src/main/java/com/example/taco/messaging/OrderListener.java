@@ -1,8 +1,8 @@
 package com.example.taco.messaging;
 
 import com.example.taco.Order;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -14,7 +14,7 @@ public class OrderListener {
         this.ui = ui;
     }
 
-    @RabbitListener
+    @KafkaListener(topics = "tacocloud.orders.topic", groupId = "my_topic")
     public void receiveOrder(Order order) {
         ui.displayOrder(order);
     }
