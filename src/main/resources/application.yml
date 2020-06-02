@@ -12,7 +12,7 @@ spring:
       base-path: /api
   jms:
     template:
-      default-destination: tacocloud.order.queue
+      default-destination: tcp://localhost:8089
 
 ---
 spring:
