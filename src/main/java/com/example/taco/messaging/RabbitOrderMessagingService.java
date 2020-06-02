@@ -23,6 +23,6 @@ public class RabbitOrderMessagingService
         MessageProperties props = new MessageProperties();
         props.setHeader("X_ORDER_SOURCE", "WEB");
         Message message = converter.toMessage(order, props);
-        rabbit.send("tacocloud.order", message);
+        rabbit.send(message);
     }
 }

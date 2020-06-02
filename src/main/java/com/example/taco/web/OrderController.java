@@ -4,6 +4,7 @@ import com.example.taco.Order;
 import com.example.taco.User;
 import com.example.taco.data.OrderRepository;
 import com.example.taco.data.UserRepository;
+import com.example.taco.messaging.OrderMessagingService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
@@ -24,14 +25,16 @@ import java.security.Principal;
 @RequestMapping("/orders")
 @SessionAttributes("order")
 public class OrderController {
-    private OrderRepository orderRepo;
-    private UserRepository userRepository;
-    private OrderProps orderProps;
+    private final OrderRepository orderRepo;
+    private final UserRepository userRepository;
+    private final OrderProps orderProps;
+    private final OrderMessagingService orderMessagingService;
 
-    public OrderController(OrderRepository orderRepo, UserRepository userRepository, OrderProps orderProps) {
+    public OrderController(OrderRepository orderRepo, UserRepository userRepository, OrderProps orderProps, OrderMessagingService orderMessagingService) {
         this.orderRepo = orderRepo;
         this.userRepository = userRepository;
         this.orderProps = orderProps;
+        this.orderMessagingService = orderMessagingService;
     }
 
     @GetMapping("/current")
@@ -54,8 +57,9 @@ public class OrderController {
             user = userRepository.findByUsername(principal.getName());
         }
         order.setUser(user);
-        orderRepo.save(order);
+        Order savedOrder = orderRepo.save(order);
         sessionStatus.setComplete();
+        orderMessagingService.sendOrder(savedOrder);
         return "redirect:/";
     }
 
