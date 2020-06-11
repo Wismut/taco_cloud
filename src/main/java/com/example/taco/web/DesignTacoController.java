@@ -8,11 +8,13 @@ import com.example.taco.data.IngredientRepository;
 import com.example.taco.data.TacoRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -24,12 +26,12 @@ import java.util.stream.Collectors;
 @SessionAttributes("order")
 public class DesignTacoController {
     private final IngredientRepository ingredientRepo;
-    private final TacoRepository designRepo;
+    private final TacoRepository tacoRepository;
 
     @Autowired
-    public DesignTacoController(IngredientRepository ingredientRepo, TacoRepository designRepo) {
+    public DesignTacoController(IngredientRepository ingredientRepo, TacoRepository tacoRepository) {
         this.ingredientRepo = ingredientRepo;
-        this.designRepo = designRepo;
+        this.tacoRepository = tacoRepository;
     }
 
     @ModelAttribute(name = "order")
@@ -67,13 +69,24 @@ public class DesignTacoController {
             return "design";
         }
         log.info("Processing design: " + design);
-        Taco saved = designRepo.save(design).block();
+        Taco saved = tacoRepository.save(design).block();
         order.addDesign(saved);
         return "redirect:/orders/current";
     }
 
     @GetMapping("/recent")
     public Flux<Taco> recentTacos() {
-        return designRepo.findAll().take(12);
+        return tacoRepository.findAll().take(12);
+    }
+
+    @GetMapping("/{id}")
+    public Mono<Taco> tacoById(@PathVariable("id") Long id) {
+        return tacoRepository.findById(id);
+    }
+
+    @PostMapping(consumes = "application/json")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Mono<Taco> postTaco(@RequestBody Mono<Taco> tacoMono) {
+        return tacoRepository.saveAll(tacoMono).next();
     }
 }
