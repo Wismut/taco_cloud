@@ -52,7 +52,7 @@ public class OrderController {
             return "orderForm";
         }
         log.info("Order submitted: " + order);
-        User user = userRepository.findAll().iterator().next();
+        User user = userRepository.findAll().blockFirst();
         if (principal != null) {
             user = userRepository.findByUsername(principal.getName());
         }

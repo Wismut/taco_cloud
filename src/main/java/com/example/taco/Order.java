@@ -3,7 +3,6 @@ package com.example.taco;
 import lombok.Data;
 import org.hibernate.validator.constraints.CreditCardNumber;
 
-import javax.persistence.*;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -12,31 +11,33 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+//import javax.persistence.*;
+
 @Data
-@Entity
-@Table(name = "Taco_Order")
+//@Entity
+//@Table(name = "Taco_Order")
 public class Order implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private Date placedAt;
 
-    @Column(name = "deliveryName")
+//    @Column(name = "deliveryName")
     @NotBlank(message = "Name is required")
     private String deliveryName;
 
-    @Column(name = "deliveryStreet")
+//    @Column(name = "deliveryStreet")
     @NotBlank(message = "Street is required")
     private String deliveryStreet;
 
-    @Column(name = "deliveryCity")
+//    @Column(name = "deliveryCity")
     @NotBlank(message = "City is required")
     private String deliveryCity;
 
-    @Column(name = "deliveryState")
+//    @Column(name = "deliveryState")
     @NotBlank(message = "State is required")
     private String deliveryState;
 
@@ -53,10 +54,10 @@ public class Order implements Serializable {
     @Digits(integer = 3, fraction = 0, message = "Invalid CVV")
     private String ccCVV;
 
-    @ManyToMany(targetEntity = Taco.class)
+//    @ManyToMany(targetEntity = Taco.class)
     private List<Taco> tacos = new ArrayList<>();
 
-    @ManyToOne
+//    @ManyToOne
     private User user;
 
     public void addDesign(Taco design) {
@@ -67,7 +68,7 @@ public class Order implements Serializable {
         return tacos;
     }
 
-    @PrePersist
+//    @PrePersist
     void placedAt() {
         this.placedAt = new Date();
     }
