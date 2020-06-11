@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -66,8 +67,13 @@ public class DesignTacoController {
             return "design";
         }
         log.info("Processing design: " + design);
-        Taco saved = designRepo.save(design);
+        Taco saved = designRepo.save(design).block();
         order.addDesign(saved);
         return "redirect:/orders/current";
+    }
+
+    @GetMapping("/recent")
+    public Flux<Taco> recentTacos() {
+        return designRepo.findAll().take(12);
     }
 }
