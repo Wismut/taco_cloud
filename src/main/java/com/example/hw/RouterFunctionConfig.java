@@ -16,11 +16,21 @@ import java.util.Objects;
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
 import static org.springframework.web.reactive.function.server.RequestPredicates.POST;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
+import static org.springframework.web.reactive.function.server.ServerResponse.ok;
+import static reactor.core.publisher.Mono.just;
 
 @Configuration
 public class RouterFunctionConfig {
     @Autowired
     private TacoRepository tacoRepo;
+
+    @Bean
+    public RouterFunction<?> helloRouterFunction() {
+        return route(GET("/hello"),
+                request -> ok().body(just("Hello World!"), String.class))
+                .andRoute(GET("/bye"),
+                        request -> ok().body(just("See ya!"), String.class));
+    }
 
     @Bean
     public RouterFunction<?> routerFunction() {
