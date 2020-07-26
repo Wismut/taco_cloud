@@ -5,16 +5,18 @@ import com.example.taco.data.TacoRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
-import org.springframework.hateoas.Resources;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 
 @RepositoryRestController
 public class RecentTacosController {
@@ -25,15 +27,16 @@ public class RecentTacosController {
     }
 
     @GetMapping(path = "/tacos/recent", produces = "application/hal+json")
-    public ResponseEntity<Resources<TacoResource>> recentTacos() {
+    public ResponseEntity<CollectionModel<TacoResource>> recentTacos() {
         PageRequest page = PageRequest.of(
                 0, 12, Sort.by("createdAt").descending());
-//        List<Taco> tacos = tacoRepo.findAll(page).getContent();
         List<Taco> tacos = Collections.emptyList();
         List<TacoResource> tacoResources =
-                new TacoResourceAssembler().toResources(tacos);
-        Resources<TacoResource> recentResources =
-                new Resources<TacoResource>(tacoResources);
+                new ArrayList<>(new TacoResourceAssembler()
+                        .toCollectionModel(tacos)
+                        .getContent());
+        CollectionModel<TacoResource> recentResources =
+                CollectionModel.of(tacoResources);
         recentResources.add(
                 linkTo(methodOn(RecentTacosController.class).recentTacos())
                         .withRel("recents"));

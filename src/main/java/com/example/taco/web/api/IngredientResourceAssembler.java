@@ -1,22 +1,22 @@
 package com.example.taco.web.api;
 
 import com.example.taco.Ingredient;
-import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
+import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 
 class IngredientResourceAssembler extends
-        ResourceAssemblerSupport<Ingredient, IngredientResource> {
+        RepresentationModelAssemblerSupport<Ingredient, IngredientModel> {
     public IngredientResourceAssembler() {
-        super(IngredientController2.class, IngredientResource.class);
+        super(IngredientController2.class, IngredientModel.class);
     }
 
     @Override
-    public IngredientResource toResource(Ingredient ingredient) {
-        return createResourceWithId(ingredient.getId(), ingredient);
+    public IngredientModel toModel(Ingredient ingredient) {
+        return createModelWithId(ingredient.getId(), ingredient);
     }
 
     @Override
-    protected IngredientResource instantiateResource(
+    protected IngredientModel instantiateModel(
             Ingredient ingredient) {
-        return new IngredientResource(ingredient);
+        return new IngredientModel(ingredient);
     }
 }

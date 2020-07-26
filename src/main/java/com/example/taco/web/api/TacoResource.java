@@ -2,14 +2,14 @@ package com.example.taco.web.api;
 
 import com.example.taco.Taco;
 import lombok.Getter;
-import org.springframework.hateoas.ResourceSupport;
-import org.springframework.hateoas.core.Relation;
+import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
 
 import java.util.Date;
 import java.util.List;
 
 @Relation(value = "taco", collectionRelation = "tacos")
-public class TacoResource extends ResourceSupport {
+public class TacoResource extends RepresentationModel<TacoResource> {
     private static final IngredientResourceAssembler
             ingredientAssembler = new IngredientResourceAssembler();
 
@@ -20,11 +20,11 @@ public class TacoResource extends ResourceSupport {
     private final Date createdAt;
 
     @Getter
-    private final List<IngredientResource> ingredients;
+    private final List<IngredientModel> ingredients;
 
     public TacoResource(Taco taco) {
         this.name = taco.getName();
         this.createdAt = taco.getCreatedAt();
-        this.ingredients = ingredientAssembler.toResources(taco.getIngredients());
+        this.ingredients = ingredientAssembler.toCollectionModel(taco.getIngredients());
     }
 }

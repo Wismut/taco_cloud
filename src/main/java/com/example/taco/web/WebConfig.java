@@ -3,10 +3,10 @@ package com.example.taco.web;
 import com.example.taco.Taco;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.hateoas.EntityLinks;
-import org.springframework.hateoas.PagedResources;
-import org.springframework.hateoas.Resource;
-import org.springframework.hateoas.ResourceProcessor;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
+import org.springframework.hateoas.server.EntityLinks;
+import org.springframework.hateoas.server.RepresentationModelProcessor;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -19,12 +19,12 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public ResourceProcessor<PagedResources<Resource<Taco>>>
+    public RepresentationModelProcessor<PagedModel<EntityModel<Taco>>>
     tacoProcessor(EntityLinks links) {
-        return new ResourceProcessor<PagedResources<Resource<Taco>>>() {
+        return new RepresentationModelProcessor<PagedModel<EntityModel<Taco>>>() {
             @Override
-            public PagedResources<Resource<Taco>> process(
-                    PagedResources<Resource<Taco>> resource) {
+            public PagedModel<EntityModel<Taco>> process(
+                    PagedModel<EntityModel<Taco>> resource) {
                 resource.add(
                         links.linkFor(Taco.class)
                                 .slash("recent")
