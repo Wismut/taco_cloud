@@ -18,8 +18,8 @@ public class KafkaOrderMessagingService
 
     @Override
     public void sendOrder(Order order) {
-        kafkaTemplate.send("tacocloud.orders.topic",
-                order.getId().toString(),
-                order.toString());
+//        kafkaTemplate.send("tacocloud.orders.topic",
+//                order.getId().toString(),
+//                order.toString());
     }
 }

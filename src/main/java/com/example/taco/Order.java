@@ -14,31 +14,24 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-//@Entity
-//@Table(name = "Taco_Order")
 @Document
 public class Order implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private String id;
 
-    private Date placedAt;
+    private Date placedAt = new Date();
 
-//    @Column(name = "deliveryName")
     @NotBlank(message = "Name is required")
     private String deliveryName;
 
-//    @Column(name = "deliveryStreet")
     @NotBlank(message = "Street is required")
     private String deliveryStreet;
 
-//    @Column(name = "deliveryCity")
     @NotBlank(message = "City is required")
     private String deliveryCity;
 
-//    @Column(name = "deliveryState")
     @NotBlank(message = "State is required")
     private String deliveryState;
 
@@ -55,10 +48,8 @@ public class Order implements Serializable {
     @Digits(integer = 3, fraction = 0, message = "Invalid CVV")
     private String ccCVV;
 
-//    @ManyToMany(targetEntity = Taco.class)
     private List<Taco> tacos = new ArrayList<>();
 
-//    @ManyToOne
     private User user;
 
     public void addDesign(Taco design) {
@@ -67,10 +58,5 @@ public class Order implements Serializable {
 
     public List<Taco> getTacos() {
         return tacos;
-    }
-
-//    @PrePersist
-    void placedAt() {
-        this.placedAt = new Date();
     }
 }
