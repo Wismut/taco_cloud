@@ -18,6 +18,7 @@ import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -49,7 +50,10 @@ public class DesignTacoController {
         Type[] types = Ingredient.Type.values();
         for (Type type : types) {
             model.addAttribute(type.toString().toLowerCase(),
-                    filterByType(ingredientRepo.findAll(), type));
+                    filterByType(Objects.requireNonNull(ingredientRepo
+                            .findAll()
+                            .collectList()
+                            .block()), type));
         }
         model.addAttribute("design", new Taco());
         return "design";
@@ -80,7 +84,7 @@ public class DesignTacoController {
     }
 
     @GetMapping("/{id}")
-    public Mono<Taco> tacoById(@PathVariable("id") Long id) {
+    public Mono<Taco> tacoById(@PathVariable("id") String id) {
         return tacoRepository.findById(id);
     }
 

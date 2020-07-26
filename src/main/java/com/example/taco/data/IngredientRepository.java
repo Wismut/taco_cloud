@@ -1,17 +1,16 @@
 package com.example.taco.data;
 
 import com.example.taco.Ingredient;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
-import java.util.Optional;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Repository
-public interface IngredientRepository extends CrudRepository<Ingredient, String> {
-    List<Ingredient> findAll();
+public interface IngredientRepository extends ReactiveCrudRepository<Ingredient, String> {
+    Flux<Ingredient> findAll();
 
-    Optional<Ingredient> findById(String id);
+    Mono<Ingredient> findById(String id);
 
-    Ingredient save(Ingredient ingredient);
+    Mono save(Ingredient ingredient);
 }

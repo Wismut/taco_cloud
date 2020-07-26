@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
+import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -57,9 +58,9 @@ public class OrderController {
             user = userRepository.findByUsername(principal.getName());
         }
         order.setUser(user);
-        Order savedOrder = orderRepo.save(order);
+        Mono<Order> savedOrder = orderRepo.save(order);
         sessionStatus.setComplete();
-        orderMessagingService.sendOrder(savedOrder);
+        orderMessagingService.sendOrder(savedOrder.block());
         return "redirect:/";
     }
 
@@ -75,7 +76,7 @@ public class OrderController {
     @PatchMapping(path = "/{orderId}", consumes = "application/json")
     public Order patchOrder(@PathVariable("orderId") Long orderId,
                             @RequestBody Order patch) {
-        Order order = orderRepo.findById(orderId).get();
+        Order order = orderRepo.findById(orderId).block();
         if (patch.getDeliveryName() != null) {
             order.setDeliveryName(patch.getDeliveryName());
         }
@@ -100,7 +101,7 @@ public class OrderController {
         if (patch.getCcCVV() != null) {
             order.setCcCVV(patch.getCcCVV());
         }
-        return orderRepo.save(order);
+        return orderRepo.save(order).block();
     }
 
     @DeleteMapping("/{orderId}")

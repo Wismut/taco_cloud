@@ -56,7 +56,7 @@ public class DesignTacoControllerTest {
         IngredientRepository ingredientRepository = Mockito.mock(IngredientRepository.class);
         Mono<Taco> unsavedTacoMono = Mono.just(testTaco(null));
         Taco savedTaco = testTaco(null);
-        savedTaco.setId(1L);
+        savedTaco.setId("1L");
         Mono<Taco> savedTacoMono = Mono.just(savedTaco);
         when(tacoRepo.save((Mono<Taco>) any())).thenReturn(savedTacoMono);
         WebTestClient testClient = WebTestClient.bindToController(
@@ -73,7 +73,7 @@ public class DesignTacoControllerTest {
 
     private Taco testTaco(Long number) {
         Taco taco = new Taco();
-        taco.setId(number);
+        taco.setId(number.toString());
         taco.setName("Taco " + number);
         List<Ingredient> ingredients = new ArrayList<>();
         ingredients.add(

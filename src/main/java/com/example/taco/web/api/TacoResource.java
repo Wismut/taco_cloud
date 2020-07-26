@@ -5,6 +5,7 @@ import lombok.Getter;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -25,6 +26,8 @@ public class TacoResource extends RepresentationModel<TacoResource> {
     public TacoResource(Taco taco) {
         this.name = taco.getName();
         this.createdAt = taco.getCreatedAt();
-        this.ingredients = ingredientAssembler.toCollectionModel(taco.getIngredients());
+        this.ingredients = new ArrayList<>(ingredientAssembler
+                .toCollectionModel(taco.getIngredients())
+                .getContent());
     }
 }

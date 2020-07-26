@@ -3,14 +3,14 @@ package com.example.taco.data;
 import com.example.taco.Order;
 import com.example.taco.User;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.reactive.ReactiveCrudRepository;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-import java.util.List;
+public interface OrderRepository extends ReactiveCrudRepository<Order, Long> {
+    Mono<Order> save(Order order);
 
-public interface OrderRepository extends CrudRepository<Order, Long> {
-    Order save(Order order);
+    Flux<Order> findByDeliveryZip(String deliveryZip);
 
-    List<Order> findByDeliveryZip(String deliveryZip);
-
-    List<Order> findByUserOrderByPlacedAtDesc(User user, Pageable pageable);
+    Flux<Order> findByUserOrderByPlacedAtDesc(User user, Pageable pageable);
 }
