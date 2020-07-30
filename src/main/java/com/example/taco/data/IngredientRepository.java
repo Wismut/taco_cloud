@@ -12,5 +12,5 @@ public interface IngredientRepository extends ReactiveCrudRepository<Ingredient,
 
     Mono<Ingredient> findById(String id);
 
-    Mono save(Ingredient ingredient);
+    Mono<Ingredient> save(Ingredient ingredient);
 }

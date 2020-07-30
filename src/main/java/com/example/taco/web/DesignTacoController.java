@@ -6,6 +6,8 @@ import com.example.taco.Order;
 import com.example.taco.Taco;
 import com.example.taco.data.IngredientRepository;
 import com.example.taco.data.TacoRepository;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -79,6 +81,10 @@ public class DesignTacoController {
     }
 
     @GetMapping("/recent")
+    @HystrixCommand(fallbackMethod = "recentDefaultTacos",
+            commandProperties = {@HystrixProperty(
+                    name = "execution.isolation.thread.timeoutInMilliseconds",
+                    value = "500")})
     public Flux<Taco> recentTacos() {
         return tacoRepository.findAll().take(12);
     }
@@ -92,5 +98,9 @@ public class DesignTacoController {
     @ResponseStatus(HttpStatus.CREATED)
     public Mono<Taco> postTaco(@RequestBody Mono<Taco> tacoMono) {
         return tacoRepository.saveAll(tacoMono).next();
+    }
+
+    private Flux<Taco> recentDefaultTacos() {
+        return Flux.empty();
     }
 }

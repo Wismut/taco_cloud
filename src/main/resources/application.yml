@@ -16,6 +16,12 @@ spring:
   application:
     name: taco_cloud
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: hystrix.stream
+
 ---
 spring:
   profiles: prod
