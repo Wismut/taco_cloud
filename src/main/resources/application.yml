@@ -13,6 +13,8 @@ spring:
   jms:
     template:
       default-destination: tcp://localhost:8089
+  application:
+    name: taco_cloud
 
 ---
 spring:
