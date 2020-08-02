@@ -15,6 +15,10 @@ spring:
       default-destination: tcp://localhost:8089
   application:
     name: taco_cloud
+  boot:
+    admin:
+      client:
+        url: http://localhost:9090
 
 management:
   endpoints:
