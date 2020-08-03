@@ -1,5 +1,6 @@
 package com.example.taco.security;
 
+import com.example.taco.TacoEventHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.trace.http.HttpTraceRepository;
 import org.springframework.boot.actuate.trace.http.InMemoryHttpTraceRepository;
@@ -71,5 +72,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public HttpTraceRepository httpTraceRepository() {
         return new InMemoryHttpTraceRepository();
+    }
+
+    @Bean
+    public TacoEventHandler tacoEventHandler() {
+        return new TacoEventHandler();
     }
 }

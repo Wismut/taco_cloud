@@ -24,6 +24,11 @@ public class TacoCounter extends AbstractRepositoryEventListener<Taco> {
         counter.incrementAndGet();
     }
 
+    @Override
+    protected void onAfterSave(Taco taco) {
+        counter.incrementAndGet();
+    }
+
     @ManagedAttribute
     public long getTacoCount() {
         return counter.get();
