@@ -11,7 +11,7 @@ public class WackoHealthIndicator implements HealthIndicator {
     @Override
     public Health health() {
         int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
-        if (hour > 12) {
+        if (hour > 22) {
             return Health
                     .outOfService()
                     .withDetail("reason",
