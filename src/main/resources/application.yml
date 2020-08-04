@@ -41,3 +41,10 @@ spring:
 logging:
   level:
     tacos: WARN
+
+---
+spring:
+  profiles: docker
+    data:
+      mongodb:
+        host: mongo
